@@ -798,11 +798,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.S.C === region.Y.C)
+	if (region.W.G === region.ab.G)
 	{
-		return 'on line ' + region.S.C;
+		return 'on line ' + region.W.G;
 	}
-	return 'on lines ' + region.S.C + ' through ' + region.Y.C;
+	return 'on lines ' + region.W.G + ' through ' + region.ab.G;
 }
 
 
@@ -1871,9 +1871,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aC,
-		impl.aK,
-		impl.aI,
+		impl.aG,
+		impl.aO,
+		impl.aM,
 		function() { return function() {} }
 	);
 });
@@ -2719,8 +2719,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		q: func(record.q),
-		U: record.U,
-		Q: record.Q
+		Y: record.Y,
+		U: record.U
 	}
 });
 
@@ -2989,10 +2989,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.q;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.U;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.Y;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.Q) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.U) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3942,11 +3942,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aC,
-		impl.aK,
-		impl.aI,
+		impl.aG,
+		impl.aO,
+		impl.aM,
 		function(sendToApp, initialModel) {
-			var view = impl.aL;
+			var view = impl.aP;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3978,12 +3978,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aC,
-		impl.aK,
-		impl.aI,
+		impl.aG,
+		impl.aO,
+		impl.aM,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.R && impl.R(sendToApp)
-			var view = impl.aL;
+			var divertHrefToApp = impl.V && impl.V(sendToApp)
+			var view = impl.aP;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3991,12 +3991,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.av);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.az);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aJ) && (_VirtualDom_doc.title = title = doc.aJ);
+				(title !== doc.aN) && (_VirtualDom_doc.title = title = doc.aN);
 			});
 		}
 	);
@@ -4052,12 +4052,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aE;
-	var onUrlRequest = impl.aF;
+	var onUrlChange = impl.aI;
+	var onUrlRequest = impl.aJ;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		R: function(sendToApp)
+		V: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4073,9 +4073,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ak === next.ak
-							&& curr.ab === next.ab
-							&& curr.ah.a === next.ah.a
+							&& curr.ao === next.ao
+							&& curr.af === next.af
+							&& curr.al.a === next.al.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4083,13 +4083,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aC: function(flags)
+		aG: function(flags)
 		{
-			return A3(impl.aC, flags, _Browser_getUrl(), key);
+			return A3(impl.aG, flags, _Browser_getUrl(), key);
 		},
-		aL: impl.aL,
-		aK: impl.aK,
-		aI: impl.aI
+		aP: impl.aP,
+		aO: impl.aO,
+		aM: impl.aM
 	});
 }
 
@@ -4155,17 +4155,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aA: 'hidden', aw: 'visibilitychange' }
+		? { aE: 'hidden', aA: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aA: 'mozHidden', aw: 'mozvisibilitychange' }
+		? { aE: 'mozHidden', aA: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aA: 'msHidden', aw: 'msvisibilitychange' }
+		? { aE: 'msHidden', aA: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aA: 'webkitHidden', aw: 'webkitvisibilitychange' }
-		: { aA: 'hidden', aw: 'visibilitychange' };
+		? { aE: 'webkitHidden', aA: 'webkitvisibilitychange' }
+		: { aE: 'hidden', aA: 'visibilitychange' };
 }
 
 
@@ -4246,12 +4246,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ao: _Browser_getScene(),
-		ar: {
-			J: _Browser_window.pageXOffset,
-			K: _Browser_window.pageYOffset,
-			as: _Browser_doc.documentElement.clientWidth,
-			aa: _Browser_doc.documentElement.clientHeight
+		as: _Browser_getScene(),
+		av: {
+			M: _Browser_window.pageXOffset,
+			N: _Browser_window.pageYOffset,
+			aw: _Browser_doc.documentElement.clientWidth,
+			ae: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4261,8 +4261,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		as: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aa: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aw: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ae: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4285,15 +4285,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ao: {
-				as: node.scrollWidth,
-				aa: node.scrollHeight
+			as: {
+				aw: node.scrollWidth,
+				ae: node.scrollHeight
 			},
-			ar: {
-				J: node.scrollLeft,
-				K: node.scrollTop,
-				as: node.clientWidth,
-				aa: node.clientHeight
+			av: {
+				M: node.scrollLeft,
+				N: node.scrollTop,
+				aw: node.clientWidth,
+				ae: node.clientHeight
 			}
 		};
 	});
@@ -4323,18 +4323,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ao: _Browser_getScene(),
-			ar: {
-				J: x,
-				K: y,
-				as: _Browser_doc.documentElement.clientWidth,
-				aa: _Browser_doc.documentElement.clientHeight
+			as: _Browser_getScene(),
+			av: {
+				M: x,
+				N: y,
+				aw: _Browser_doc.documentElement.clientWidth,
+				ae: _Browser_doc.documentElement.clientHeight
 			},
-			ay: {
-				J: x + rect.left,
-				K: y + rect.top,
-				as: rect.width,
-				aa: rect.height
+			aC: {
+				M: x + rect.left,
+				N: y + rect.top,
+				aw: rect.width,
+				ae: rect.height
 			}
 		};
 	});
@@ -4919,7 +4919,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {_: fragment, ab: host, af: path, ah: port_, ak: protocol, al: query};
+		return {ad: fragment, af: host, aj: path, al: port_, ao: protocol, ap: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5206,9 +5206,13 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$initialModel = _Utils_Tuple2(
 	{
 		i: 2000,
-		B: 20,
+		E: 500,
 		m: $author$project$Main$AnimationNone,
-		E: $elm$time$Time$millisToPosix(0)
+		F: 0,
+		v: _List_Nil,
+		s: $elm$time$Time$millisToPosix(0),
+		O: $elm$time$Time$millisToPosix(0),
+		t: true
 	},
 	$elm$core$Platform$Cmd$none);
 var $author$project$Main$OnAnimationFrame = function (a) {
@@ -5221,7 +5225,7 @@ var $elm$browser$Browser$AnimationManager$Time = function (a) {
 };
 var $elm$browser$Browser$AnimationManager$State = F3(
 	function (subs, request, oldTime) {
-		return {O: oldTime, an: request, ap: subs};
+		return {S: oldTime, ar: request, at: subs};
 	});
 var $elm$browser$Browser$AnimationManager$init = $elm$core$Task$succeed(
 	A3($elm$browser$Browser$AnimationManager$State, _List_Nil, $elm$core$Maybe$Nothing, 0));
@@ -5232,8 +5236,8 @@ var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
 var $elm$core$Process$spawn = _Scheduler_spawn;
 var $elm$browser$Browser$AnimationManager$onEffects = F3(
 	function (router, subs, _v0) {
-		var request = _v0.an;
-		var oldTime = _v0.O;
+		var request = _v0.ar;
+		var oldTime = _v0.S;
 		var _v1 = _Utils_Tuple2(request, subs);
 		if (_v1.a.$ === 1) {
 			if (!_v1.b.b) {
@@ -5279,8 +5283,8 @@ var $elm$browser$Browser$AnimationManager$onEffects = F3(
 	});
 var $elm$browser$Browser$AnimationManager$onSelfMsg = F3(
 	function (router, newTime, _v0) {
-		var subs = _v0.ap;
-		var oldTime = _v0.O;
+		var subs = _v0.at;
+		var oldTime = _v0.S;
 		var send = function (sub) {
 			if (!sub.$) {
 				var tagger = sub.a;
@@ -5347,14 +5351,18 @@ var $elm$browser$Browser$AnimationManager$onAnimationFrame = function (tagger) {
 };
 var $elm$browser$Browser$Events$onAnimationFrame = $elm$browser$Browser$AnimationManager$onAnimationFrame;
 var $author$project$Main$subscriptions = function (model) {
-	var _v0 = model.m;
-	switch (_v0.$) {
-		case 3:
-			return $elm$browser$Browser$Events$onAnimationFrame($author$project$Main$OnAnimationFrame);
-		case 4:
-			return $elm$browser$Browser$Events$onAnimationFrame($author$project$Main$OnAnimationFrame);
-		default:
-			return $elm$core$Platform$Sub$none;
+	if (model.t) {
+		return $elm$browser$Browser$Events$onAnimationFrame($author$project$Main$OnAnimationFrame);
+	} else {
+		var _v0 = model.m;
+		switch (_v0.$) {
+			case 3:
+				return $elm$browser$Browser$Events$onAnimationFrame($author$project$Main$OnAnimationFrame);
+			case 4:
+				return $elm$browser$Browser$Events$onAnimationFrame($author$project$Main$OnAnimationFrame);
+			default:
+				return $elm$core$Platform$Sub$none;
+		}
 	}
 };
 var $author$project$Main$AnimationOnAnimationFrame = function (a) {
@@ -5369,6 +5377,8 @@ var $author$project$Main$StartAnimationOnAnimationFrame = function (a) {
 var $author$project$Main$StartAnimationOnAnimationFrameInStyle = function (a) {
 	return {$: 5, a: a};
 };
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $elm$core$Basics$not = _Basics_not;
 var $elm$time$Time$Name = function (a) {
 	return {$: 0, a: a};
 };
@@ -5381,6 +5391,11 @@ var $elm$time$Time$Zone = F2(
 	});
 var $elm$time$Time$customZone = $elm$time$Time$Zone;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
+var $elm$time$Time$posixToMillis = function (_v0) {
+	var millis = _v0;
+	return millis;
+};
+var $elm$core$Basics$round = _Basics_round;
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -5414,15 +5429,34 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{B: newQuantity}),
+						{E: newQuantity}),
 					$elm$core$Platform$Cmd$none);
 			case 3:
 				var posix = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{E: posix}),
-					$elm$core$Platform$Cmd$none);
+				if (model.t) {
+					var fpsHistory = function () {
+						if (!A2($elm$core$Basics$modBy, 10, model.F)) {
+							var fpsCurrent = 1 / (($elm$time$Time$posixToMillis(model.s) - $elm$time$Time$posixToMillis(model.O)) / 1000);
+							return A2(
+								$elm$core$List$cons,
+								$elm$core$Basics$round(fpsCurrent),
+								model.v);
+						} else {
+							return model.v;
+						}
+					}();
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{F: model.F + 1, v: fpsHistory, s: posix, O: model.s}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{s: posix}),
+						$elm$core$Platform$Cmd$none);
+				}
 			case 4:
 				var posix = msg.a;
 				return _Utils_Tuple2(
@@ -5432,7 +5466,7 @@ var $author$project$Main$update = F2(
 							m: $author$project$Main$AnimationOnAnimationFrame(posix)
 						}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			case 5:
 				var posix = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
@@ -5440,6 +5474,12 @@ var $author$project$Main$update = F2(
 						{
 							m: $author$project$Main$AnimationOnAnimationFrameInStyle(posix)
 						}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{t: !model.t}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
@@ -5454,6 +5494,7 @@ var $author$project$Main$ChangeLength = function (a) {
 var $author$project$Main$ChangeQuantity = function (a) {
 	return {$: 2, a: a};
 };
+var $author$project$Main$ToggleFps = {$: 6};
 var $author$project$Main$attrs = _List_Nil;
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
@@ -5509,7 +5550,7 @@ var $author$project$Main$fn = F2(
 		var u = 1 - pointInTime;
 		var transform = '';
 		var target_opacity = 1;
-		var od = target_opacity * (1 - fly.D);
+		var od = target_opacity * (1 - fly.H);
 		return _List_fromArray(
 			[
 				_Utils_Tuple2(
@@ -5520,9 +5561,9 @@ var $author$project$Main$fn = F2(
 					_List_fromArray(
 						[
 							'translate(',
-							$elm$core$String$fromFloat(u * fly.J),
+							$elm$core$String$fromFloat(u * fly.M),
 							'px, ',
-							$elm$core$String$fromFloat(u * fly.K),
+							$elm$core$String$fromFloat(u * fly.N),
 							'px)'
 						]))),
 				_Utils_Tuple2(
@@ -5530,22 +5571,17 @@ var $author$project$Main$fn = F2(
 				$elm$core$String$fromFloat(target_opacity - (u * od)))
 			]);
 	});
-var $elm$core$Basics$modBy = _Basics_modBy;
-var $elm$time$Time$posixToMillis = function (_v0) {
-	var millis = _v0;
-	return millis;
-};
 var $author$project$Main$animationOnAnimationFrame = F2(
 	function (model, posixStarted) {
 		var pointInTimeNotNormilized = A2(
 			$elm$core$Basics$modBy,
 			model.i,
-			$elm$time$Time$posixToMillis(model.E) - $elm$time$Time$posixToMillis(posixStarted));
+			$elm$time$Time$posixToMillis(model.s) - $elm$time$Time$posixToMillis(posixStarted));
 		var pointInTime = pointInTimeNotNormilized / model.i;
 		var transofrmations = A2(
 			$author$project$Main$fn,
 			pointInTime,
-			{D: 0, J: 0, K: 200});
+			{H: 0, M: 0, N: 200});
 		return A2(
 			$elm$html$Html$span,
 			_Utils_ap(
@@ -5636,10 +5672,10 @@ var $author$project$Main$recursionStep = F3(
 var $author$project$Main$recursion = function (_v0) {
 	recursion:
 	while (true) {
-		var pointInTime = _v0.P;
-		var stepSize = _v0.T;
-		var acc = _v0.L;
-		var fly = _v0.M;
+		var pointInTime = _v0.T;
+		var stepSize = _v0.X;
+		var acc = _v0.P;
+		var fly = _v0.Q;
 		var b = 1;
 		var r = function (t) {
 			return A2(
@@ -5649,10 +5685,10 @@ var $author$project$Main$recursion = function (_v0) {
 		};
 		if ((pointInTime + stepSize) <= 1) {
 			var $temp$_v0 = {
-				L: r(pointInTime),
-				M: fly,
-				P: pointInTime + stepSize,
-				T: stepSize
+				P: r(pointInTime),
+				Q: fly,
+				T: pointInTime + stepSize,
+				X: stepSize
 			};
 			_v0 = $temp$_v0;
 			continue recursion;
@@ -5666,19 +5702,32 @@ var $author$project$Main$createRule = F2(
 	function (duration, fly) {
 		var stepSize = $author$project$Main$timePerFrame / duration;
 		var result = $author$project$Main$recursion(
-			{L: _List_Nil, M: fly, P: 0, T: stepSize});
+			{P: _List_Nil, Q: fly, T: 0, X: stepSize});
 		return A2(
 			$elm$core$String$join,
 			'\n, ',
 			$elm$core$List$reverse(result));
 	});
 var $author$project$Main$css = function (model) {
-	return '\nbutton {\n    margin: 5px;\n    font-size: 16px;\n}\n\nspan {\n    display: inline-block;\n    background-color: lightGreen;\n}\n@keyframes keyframesShort {\n0%{\n    transform:  translate(0px, 200px);\n    opacity: 0}\n100% {\n    transform:  translate(0px, 0px);\n    opacity: 1}\n}\n\n@keyframes keyframesLong\n{ ' + (A2(
+	return '\n.fps {\n    width: 2px;\n    display: inline-block;\n    background-color: green;\n}\n\nbutton {\n    margin: 5px;\n    font-size: 16px;\n}\n\nspan {\n    display: inline-block;\n    background-color: lightGreen;\n}\n@keyframes keyframesShort {\n0%{\n    transform:  translate(0px, 200px);\n    opacity: 0}\n100% {\n    transform:  translate(0px, 0px);\n    opacity: 1}\n}\n\n@keyframes keyframesLong\n{ ' + (A2(
 		$author$project$Main$createRule,
 		model.i,
-		{D: 0, J: 0, K: 200}) + '\n}\n');
+		{H: 0, M: 0, N: 200}) + '\n}\n');
 };
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Basics$min = F2(
+	function (x, y) {
+		return (_Utils_cmp(x, y) < 0) ? x : y;
+	});
 var $elm$virtual_dom$VirtualDom$node = function (tag) {
 	return _VirtualDom_node(
 		_VirtualDom_noScript(tag));
@@ -5722,6 +5771,141 @@ var $elm$core$List$repeat = F2(
 	function (n, value) {
 		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
 	});
+var $elm$core$List$takeReverse = F3(
+	function (n, list, kept) {
+		takeReverse:
+		while (true) {
+			if (n <= 0) {
+				return kept;
+			} else {
+				if (!list.b) {
+					return kept;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs,
+						$temp$kept = A2($elm$core$List$cons, x, kept);
+					n = $temp$n;
+					list = $temp$list;
+					kept = $temp$kept;
+					continue takeReverse;
+				}
+			}
+		}
+	});
+var $elm$core$List$takeTailRec = F2(
+	function (n, list) {
+		return $elm$core$List$reverse(
+			A3($elm$core$List$takeReverse, n, list, _List_Nil));
+	});
+var $elm$core$List$takeFast = F3(
+	function (ctr, n, list) {
+		if (n <= 0) {
+			return _List_Nil;
+		} else {
+			var _v0 = _Utils_Tuple2(n, list);
+			_v0$1:
+			while (true) {
+				_v0$5:
+				while (true) {
+					if (!_v0.b.b) {
+						return list;
+					} else {
+						if (_v0.b.b.b) {
+							switch (_v0.a) {
+								case 1:
+									break _v0$1;
+								case 2:
+									var _v2 = _v0.b;
+									var x = _v2.a;
+									var _v3 = _v2.b;
+									var y = _v3.a;
+									return _List_fromArray(
+										[x, y]);
+								case 3:
+									if (_v0.b.b.b.b) {
+										var _v4 = _v0.b;
+										var x = _v4.a;
+										var _v5 = _v4.b;
+										var y = _v5.a;
+										var _v6 = _v5.b;
+										var z = _v6.a;
+										return _List_fromArray(
+											[x, y, z]);
+									} else {
+										break _v0$5;
+									}
+								default:
+									if (_v0.b.b.b.b && _v0.b.b.b.b.b) {
+										var _v7 = _v0.b;
+										var x = _v7.a;
+										var _v8 = _v7.b;
+										var y = _v8.a;
+										var _v9 = _v8.b;
+										var z = _v9.a;
+										var _v10 = _v9.b;
+										var w = _v10.a;
+										var tl = _v10.b;
+										return (ctr > 1000) ? A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A2($elm$core$List$takeTailRec, n - 4, tl))))) : A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A3($elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
+									} else {
+										break _v0$5;
+									}
+							}
+						} else {
+							if (_v0.a === 1) {
+								break _v0$1;
+							} else {
+								break _v0$5;
+							}
+						}
+					}
+				}
+				return list;
+			}
+			var _v1 = _v0.b;
+			var x = _v1.a;
+			return _List_fromArray(
+				[x]);
+		}
+	});
+var $elm$core$List$take = F2(
+	function (n, list) {
+		return A3($elm$core$List$takeFast, 0, n, list);
+	});
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5747,7 +5931,7 @@ var $author$project$Main$view = function (model) {
 					var pointInTimeNotNormilized = A2(
 						$elm$core$Basics$modBy,
 						model.i,
-						$elm$time$Time$posixToMillis(model.E) - $elm$time$Time$posixToMillis(posixStarted));
+						$elm$time$Time$posixToMillis(model.s) - $elm$time$Time$posixToMillis(posixStarted));
 					var pointInTime = pointInTimeNotNormilized / model.i;
 					return A3(
 						$elm$html$Html$node,
@@ -5760,7 +5944,7 @@ var $author$project$Main$view = function (model) {
 									A2(
 										$author$project$Main$fn,
 										pointInTime,
-										{D: 0, J: 0, K: 200})) + '}'))
+										{H: 0, M: 0, N: 200})) + '}'))
 							]));
 				} else {
 					return A3(
@@ -5773,6 +5957,58 @@ var $author$project$Main$view = function (model) {
 							]));
 				}
 			}(),
+				model.t ? A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$elm$core$String$fromInt(
+							A2(
+								$elm$core$Maybe$withDefault,
+								0,
+								$elm$core$List$head(model.v)))),
+						$elm$html$Html$text(' FPS')
+					])) : $elm$html$Html$text(''),
+				model.t ? A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				A2(
+					$elm$core$List$map,
+					function (y) {
+						return A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('fps'),
+									A2(
+									$elm$html$Html$Attributes$style,
+									'height',
+									$elm$core$String$fromInt(
+										A2($elm$core$Basics$min, 70, y)) + 'px')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('')
+								]));
+					},
+					A2($elm$core$List$take, 100, model.v))) : $elm$html$Html$text(''),
+				A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$ToggleFps)
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Toggle FPS')
+							]))
+					])),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -5959,14 +6195,14 @@ var $author$project$Main$view = function (model) {
 							])),
 						$elm$html$Html$text(' '),
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(model.B))
+						$elm$core$String$fromInt(model.E))
 					])),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
 				A2(
 					$elm$core$List$repeat,
-					model.B,
+					model.E,
 					function () {
 						var _v1 = model.m;
 						switch (_v1.$) {
@@ -5987,12 +6223,12 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		aC: function (_v0) {
+		aG: function (_v0) {
 			return $author$project$Main$initialModel;
 		},
-		aI: $author$project$Main$subscriptions,
-		aK: $author$project$Main$update,
-		aL: $author$project$Main$view
+		aM: $author$project$Main$subscriptions,
+		aO: $author$project$Main$update,
+		aP: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

@@ -14,6 +14,10 @@ type alias Model =
     , animationLength : Int
     , animationQuantity : Int
     , posix : Time.Posix
+    , previousPosix : Time.Posix
+    , counter : Int
+    , fpsHistory : List Int
+    , showFps : Bool
     }
 
 
@@ -48,8 +52,12 @@ initialModel : ( Model, Cmd msg )
 initialModel =
     ( { animationType = AnimationNone
       , animationLength = 2000
-      , animationQuantity = 20
+      , animationQuantity = 500
       , posix = Time.millisToPosix 0
+      , previousPosix = Time.millisToPosix 0
+      , counter = 0
+      , fpsHistory = []
+      , showFps = True
       }
     , Cmd.none
     )
@@ -62,6 +70,7 @@ type Msg
     | OnAnimationFrame Time.Posix
     | StartAnimationOnAnimationFrame Time.Posix
     | StartAnimationOnAnimationFrameInStyle Time.Posix
+    | ToggleFps
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -85,13 +94,39 @@ update msg model =
             ( { model | animationQuantity = newQuantity }, Cmd.none )
 
         OnAnimationFrame posix ->
-            ( { model | posix = posix }, Cmd.none )
+            if model.showFps then
+                let
+                    fpsHistory =
+                        if modBy 10 model.counter == 0 then
+                            let
+                                fpsCurrent =
+                                    1 / (toFloat (Time.posixToMillis model.posix - Time.posixToMillis model.previousPosix) / 1000)
+                            in
+                            round fpsCurrent :: model.fpsHistory
+
+                        else
+                            model.fpsHistory
+                in
+                ( { model
+                    | posix = posix
+                    , previousPosix = model.posix
+                    , counter = model.counter + 1
+                    , fpsHistory = fpsHistory
+                  }
+                , Cmd.none
+                )
+
+            else
+                ( { model | posix = posix }, Cmd.none )
 
         StartAnimationOnAnimationFrame posix ->
             ( { model | animationType = AnimationOnAnimationFrame posix }, Cmd.none )
 
         StartAnimationOnAnimationFrameInStyle posix ->
             ( { model | animationType = AnimationOnAnimationFrameInStyle posix }, Cmd.none )
+
+        ToggleFps ->
+            ( { model | showFps = not model.showFps }, Cmd.none )
 
 
 attrs : List (Attribute msg)
@@ -170,6 +205,29 @@ view model =
 
             _ ->
                 node "style" [] [ text <| "" ]
+        , if model.showFps then
+            div []
+                [ text <| String.fromInt <| Maybe.withDefault 0 <| List.head model.fpsHistory
+                , text " FPS"
+                ]
+
+          else
+            text ""
+        , if model.showFps then
+            div [] <|
+                List.map
+                    (\y ->
+                        div
+                            [ class "fps"
+                            , style "height" (String.fromInt (Basics.min 70 y) ++ "px")
+                            ]
+                            [ text "" ]
+                    )
+                    (List.take 100 model.fpsHistory)
+
+          else
+            text ""
+        , div [] [ button [ onClick <| ToggleFps ] [ text "Toggle FPS" ] ]
         , div []
             [ text "Type "
             , button [ onClick <| ChangeAnimation <| AnimationNone ] [ text "None" ]
@@ -221,15 +279,19 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    case model.animationType of
-        AnimationOnAnimationFrame _ ->
-            Browser.Events.onAnimationFrame OnAnimationFrame
+    if model.showFps then
+        Browser.Events.onAnimationFrame OnAnimationFrame
 
-        AnimationOnAnimationFrameInStyle _ ->
-            Browser.Events.onAnimationFrame OnAnimationFrame
+    else
+        case model.animationType of
+            AnimationOnAnimationFrame _ ->
+                Browser.Events.onAnimationFrame OnAnimationFrame
 
-        _ ->
-            Sub.none
+            AnimationOnAnimationFrameInStyle _ ->
+                Browser.Events.onAnimationFrame OnAnimationFrame
+
+            _ ->
+                Sub.none
 
 
 timePerFrame : Float
@@ -353,6 +415,12 @@ main =
 css : Model -> String
 css model =
     """
+.fps {
+    width: 2px;
+    display: inline-block;
+    background-color: green;
+}
+
 button {
     margin: 5px;
     font-size: 16px;
